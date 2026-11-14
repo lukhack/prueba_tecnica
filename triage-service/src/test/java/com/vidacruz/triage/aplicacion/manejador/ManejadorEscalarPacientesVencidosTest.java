@@ -41,7 +41,6 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 @DisplayName("RF-03: caso de uso de escalamiento por SLA")
 class ManejadorEscalarPacientesVencidosTest {
-
     private static final Instant AHORA = Instant.parse("2026-11-14T10:30:00Z");
     private static final PoliticaSla SLA_DE_LA_REGLA = nivel -> switch (nivel) {
         case CRITICO -> Duration.ofMinutes(5);
@@ -102,7 +101,7 @@ class ManejadorEscalarPacientesVencidosTest {
     void noDuplicaEventoNiAuditoriaSiOtraInstanciaYaLoEscalo() {
         Paciente vencido = pacienteRegistradoHace(NivelTriaje.CRITICO, Duration.ofMinutes(10));
         when(pacientes.buscarRegistradosNoEscalados()).thenReturn(Flux.just(vencido));
-        // La actualización condicional no afectó filas: alguien más ganó la carrera (RN-03).
+
         when(pacientes.marcarEscaladoSiAplica(vencido.id(), AHORA)).thenReturn(Mono.just(false));
         when(transacciones.transactional(any(Mono.class))).thenAnswer(inv -> inv.getArgument(0));
 

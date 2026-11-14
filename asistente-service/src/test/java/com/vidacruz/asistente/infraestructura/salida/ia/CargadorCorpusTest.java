@@ -9,7 +9,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class CargadorCorpusTest {
-
     @Test
     void parteUnProtocoloEnUnFragmentoPorSeccion() {
         String markdown = """

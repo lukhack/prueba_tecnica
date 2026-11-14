@@ -16,33 +16,13 @@ import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Adaptador Redis del puerto {@link VistaEstadoUrgencias} (ver ADR-005).
- *
- * <p>Estructuras:</p>
- * <ul>
- *   <li>{@code urgencias:activos} — hash nivel → cantidad de pacientes activos.</li>
- *   <li>{@code urgencias:paciente:{id}} — hash con {@code nivel} y último {@code estado} conocido (TTL 7 días).</li>
- *   <li>{@code urgencias:actualizado} — instante del último evento aplicado.</li>
- * </ul>
- *
- * <p>La transición se aplica con un script Lua, de modo que leer el estado previo y ajustar el
- * contador es atómico. Así la vista es idempotente ante entregas duplicadas y tolera eventos
- * fuera de orden: un paciente ya en ALTA nunca vuelve a sumar.</p>
- */
 @Component
 public class AdaptadorVistaUrgenciasRedis implements VistaEstadoUrgencias {
-
     static final String CLAVE_ACTIVOS = "urgencias:activos";
     static final String CLAVE_ACTUALIZADO = "urgencias:actualizado";
     static final String PREFIJO_PACIENTE = "urgencias:paciente:";
     static final Duration TTL_PACIENTE = Duration.ofDays(7);
 
-    /**
-     * KEYS[1] = clave del paciente, KEYS[2] = hash de activos.
-     * ARGV[1] = nivel, ARGV[2] = nuevo estado, ARGV[3] = "1" si el paciente queda activo, ARGV[4] = TTL en segundos.
-     * Devuelve 1 si la vista cambió, 0 si el evento se ignoró (duplicado o tardío).
-     */
     static final String SCRIPT_APLICAR = """
             local estadoActual = redis.call('HGET', KEYS[1], 'estado')
             if estadoActual == 'ALTA' then

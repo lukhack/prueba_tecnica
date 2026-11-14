@@ -16,7 +16,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class PacienteTest {
-
     private static final Instant T0 = Instant.parse("2026-11-14T10:00:00Z");
     private static final SignosVitales SIGNOS_NORMALES =
             new SignosVitales(72, 120, 80, 99, new BigDecimal("36.5"), 2, 15);
@@ -28,7 +27,6 @@ class PacienteTest {
     @Nested
     @DisplayName("RF-01: registro")
     class Registro {
-
         @Test
         void nacePendienteDeConsultaYSinEscalar() {
             Paciente p = pacienteRegistrado(NivelTriaje.NO_URGENTE);
@@ -53,7 +51,6 @@ class PacienteTest {
     @Nested
     @DisplayName("RF-02: flujo de estados")
     class FlujoDeEstados {
-
         @Test
         void registradoPuedePasarAConsultaYLuegoAAlta() {
             Paciente p = pacienteRegistrado(NivelTriaje.URGENTE);
@@ -108,7 +105,6 @@ class PacienteTest {
     @Nested
     @DisplayName("RF-03 / RN-03: SLA y escalamiento idempotente")
     class Escalamiento {
-
         @Test
         void superaElSlaSoloCuandoPasaElTiempoDelNivel() {
             Paciente p = pacienteRegistrado(NivelTriaje.CRITICO);

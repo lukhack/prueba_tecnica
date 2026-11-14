@@ -24,18 +24,7 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Adaptador del puerto {@link GeneradorRespuestas} con Spring AI.
- *
- * <ul>
- *   <li>Usa la API de <em>streaming</em> del modelo (totalmente reactiva) y concatena los trozos.</li>
- *   <li>Protegido con timeout + circuit breaker de Resilience4j; cualquier fallo se traduce a
- *       {@link ExcepcionProveedorIaNoDisponible} (modo degradado, HTTP 503).</li>
- *   <li>Pide al modelo JSON estricto con la respuesta, las citas y la bandera {@code sinProtocolo}.</li>
- * </ul>
- */
 public class GeneradorRespuestasSpringAi implements GeneradorRespuestas {
-
     static final String METRICA_LATENCIA_LLM = "asistente.llm.latencia";
 
     static final String INSTRUCCIONES = """
@@ -105,7 +94,6 @@ public class GeneradorRespuestasSpringAi implements GeneradorRespuestas {
         return texto == null ? "" : texto;
     }
 
-    /** Tolera que el modelo envuelva el JSON en ```json ... ``` o añada texto alrededor. */
     RespuestaGenerada parsear(String crudo) {
         String json = extraerJson(crudo);
         try {
@@ -118,7 +106,6 @@ public class GeneradorRespuestasSpringAi implements GeneradorRespuestas {
             }
             return new RespuestaGenerada(respuesta, fuentes, sinProtocolo);
         } catch (Exception e) {
-            // Una salida no estructurada no es confiable: se trata como "sin protocolo" (RN-05).
             log.warn("El modelo devolvió una salida no parseable; se descarta. Inicio: {}",
                     crudo.length() > 120 ? crudo.substring(0, 120) : crudo);
             return new RespuestaGenerada("", List.of(), true);

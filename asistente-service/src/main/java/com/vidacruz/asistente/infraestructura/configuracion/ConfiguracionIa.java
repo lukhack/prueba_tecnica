@@ -18,17 +18,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.EventListener;
 import reactor.core.publisher.Mono;
 
-/**
- * Cableado de la IA (ver ADR-002 y ADR-003):
- * <ul>
- *   <li>Vector store en memoria de Spring AI alimentado por el modelo de embeddings del proveedor.</li>
- *   <li>Un único circuit breaker {@code proveedorIa} protege tanto embeddings como generación.</li>
- *   <li>El corpus se indexa en segundo plano al arrancar; el probe de readiness lo refleja.</li>
- * </ul>
- */
 @Configuration
 public class ConfiguracionIa {
-
     public static final String CIRCUIT_BREAKER_IA = "proveedorIa";
 
     @Bean
@@ -55,7 +46,6 @@ public class ConfiguracionIa {
                 rag.timeoutLlm(), meterRegistry);
     }
 
-    /** Health indicator "corpus": forma parte del grupo readiness (ver application.yml). */
     @Bean
     public ReactiveHealthIndicator corpusHealthIndicator(IndiceVectorialProtocolos indice) {
         return () -> Mono.fromSupplier(() -> indice.estaIndexado()
@@ -68,7 +58,6 @@ public class ConfiguracionIa {
         return new IndexadorAlArrancar(indice);
     }
 
-    /** Dispara la indexación cuando la aplicación está lista, sin bloquear el arranque. */
     public static class IndexadorAlArrancar {
         private final IndiceVectorialProtocolos indice;
 

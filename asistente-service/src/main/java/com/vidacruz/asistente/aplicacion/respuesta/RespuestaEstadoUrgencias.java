@@ -7,9 +7,7 @@ import java.time.Instant;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** Contrato de {@code GET /asistente/estado-urgencias}. */
 public record RespuestaEstadoUrgencias(Map<String, Long> activosPorNivel, long totalActivos, Instant actualizadoEn) {
-
     public static RespuestaEstadoUrgencias de(EstadoUrgencias estado) {
         Map<String, Long> porNivel = new LinkedHashMap<>();
         for (NivelTriaje nivel : NivelTriaje.values()) {

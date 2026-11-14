@@ -10,10 +10,8 @@ import org.springframework.data.relational.core.mapping.Table;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
-/** Fila de la tabla {@code auditoria_clinica}. */
 @Table("auditoria_clinica")
 public class AuditoriaEntidad {
-
     @Id
     private UUID id;
     @Column("paciente_id")

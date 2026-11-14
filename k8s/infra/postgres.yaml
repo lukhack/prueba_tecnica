@@ -1,4 +1,3 @@
-# PostgreSQL para el entorno de evaluación. En producción: Azure Database for PostgreSQL Flexible Server.
 apiVersion: v1
 kind: Service
 metadata:

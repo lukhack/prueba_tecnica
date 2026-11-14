@@ -1,9 +1,4 @@
 #!/usr/bin/env bash
-# Despliegue en Azure (AKS + ACR). Requiere: az CLI autenticado, kubectl, Docker.
-#
-#   export ACR_NAME=vidacruzacr RG=rg-vidacruz AKS_NAME=aks-vidacruz LOCATION=eastus
-#   export TRIAGE_API_KEY=... ASISTENTE_API_KEY=... LLM_API_KEY=... DB_PASSWORD=...
-#   ./scripts/azure-deploy.sh
 set -euo pipefail
 
 : "${ACR_NAME:?Defina ACR_NAME}"

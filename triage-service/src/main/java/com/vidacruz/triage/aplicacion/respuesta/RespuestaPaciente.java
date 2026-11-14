@@ -9,7 +9,6 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.UUID;
 
-/** Representación del paciente que devuelve la API (RF-01 y RF-02). */
 public record RespuestaPaciente(
         UUID id,
         String nombreCompleto,
@@ -27,7 +26,6 @@ public record RespuestaPaciente(
         Instant fechaEscalamiento,
         long tiempoEnEstadoActualMinutos,
         Duration tiempoEnEstadoActual) {
-
     public static RespuestaPaciente de(Paciente p, long slaMinutos, Instant ahora) {
         Duration enEstado = p.tiempoEnEstadoActual(ahora);
         return new RespuestaPaciente(

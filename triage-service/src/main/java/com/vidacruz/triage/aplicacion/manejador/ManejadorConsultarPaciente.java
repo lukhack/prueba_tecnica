@@ -9,9 +9,7 @@ import reactor.core.publisher.Mono;
 import java.time.Clock;
 import java.util.UUID;
 
-/** Caso de uso RF-02 (consulta): datos completos, estado, flags y tiempo en el estado actual. */
 public class ManejadorConsultarPaciente {
-
     private final RepositorioPacientes pacientes;
     private final PoliticaSla politicaSla;
     private final Clock reloj;

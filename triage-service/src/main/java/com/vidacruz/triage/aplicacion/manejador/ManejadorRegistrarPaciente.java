@@ -21,17 +21,7 @@ import reactor.core.publisher.Mono;
 
 import java.time.Clock;
 
-/**
- * Caso de uso RF-01: registrar y clasificar un paciente.
- *
- * <ol>
- *   <li>Valida los datos y clasifica (dominio puro, síncrono y barato).</li>
- *   <li>Persiste paciente + auditoría en una misma transacción.</li>
- *   <li>Publica {@code paciente_registrado} una vez confirmada la transacción.</li>
- * </ol>
- */
 public class ManejadorRegistrarPaciente {
-
     private static final Logger log = LoggerFactory.getLogger(ManejadorRegistrarPaciente.class);
 
     private final ClasificadorTriaje clasificador;

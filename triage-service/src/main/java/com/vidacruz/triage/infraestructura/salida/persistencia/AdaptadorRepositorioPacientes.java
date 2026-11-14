@@ -16,10 +16,8 @@ import java.util.UUID;
 import static org.springframework.data.relational.core.query.Criteria.where;
 import static org.springframework.data.relational.core.query.Query.query;
 
-/** Adaptador R2DBC del puerto {@link RepositorioPacientes}. */
 @Repository
 public class AdaptadorRepositorioPacientes implements RepositorioPacientes {
-
     private final R2dbcEntityTemplate template;
     private final DatabaseClient db;
 
@@ -37,7 +35,6 @@ public class AdaptadorRepositorioPacientes implements RepositorioPacientes {
 
     @Override
     public Mono<Paciente> actualizar(Paciente paciente) {
-        // Solo cambian los campos mutables del agregado: estado, flags y fechas asociadas.
         DatabaseClient.GenericExecuteSpec sentencia = db.sql("""
                         UPDATE pacientes
                            SET estado = :estado,
@@ -83,7 +80,6 @@ public class AdaptadorRepositorioPacientes implements RepositorioPacientes {
 
     @Override
     public Mono<Boolean> marcarEscaladoSiAplica(UUID id, Instant cuando) {
-        // Actualización condicional: la base de datos garantiza que solo una llamada "gana" (RN-03).
         return db.sql("""
                         UPDATE pacientes
                            SET escalado = TRUE,

@@ -34,27 +34,21 @@ import java.util.function.Predicate;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-/**
- * Test de integración del Servicio de Asistente con Kafka y Redis reales (Testcontainers) y proveedor
- * de IA simulado ({@link ModelosIaFalsos}): RAG con citas, anti-alucinación, modo degradado y
- * reconstrucción del estado de urgencias a partir de eventos.
- */
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = {
         "seguridad.api-key=clave-de-prueba",
-        "spring.ai.model.chat=none",                 // se reemplazan por los dobles de ModelosIaFalsos
+        "spring.ai.model.chat=none",
         "spring.ai.model.embedding=none",
         "spring.ai.model.image=none",
         "spring.ai.model.audio.speech=none",
         "spring.ai.model.audio.transcription=none",
         "spring.ai.model.moderation=none",
         "spring.ai.openai.api-key=no-se-usa-en-tests",
-        "asistente.rag.umbral-similitud=0.20",       // los embeddings falsos son léxicos: umbral acorde
+        "asistente.rag.umbral-similitud=0.20",
 })
 @Import(ModelosIaFalsos.class)
 @Testcontainers
 @AutoConfigureObservability
 class AsistenteApiIT {
-
     @Container
     @ServiceConnection
     static final KafkaContainer kafka = new KafkaContainer("apache/kafka:3.9.1");
@@ -115,7 +109,6 @@ class AsistenteApiIT {
     @Nested
     @DisplayName("RF-04 A: consulta con RAG y RN-05")
     class ConsultaRag {
-
         @Test
         void respondeCrisisHipertensivaCitandoProto001() {
             JsonNode r = consultar("¿Cuáles son las medidas iniciales ante una crisis hipertensiva?", 200);
@@ -172,7 +165,6 @@ class AsistenteApiIT {
     @Nested
     @DisplayName("RF-04 B: estado de urgencias desde triaje.eventos")
     class EstadoUrgencias {
-
         @Test
         void reconstruyeActivosPorNivelDeFormaIdempotente() {
             String p1 = UUID.randomUUID().toString();
@@ -184,13 +176,13 @@ class AsistenteApiIT {
                     ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class,
                     ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class))) {
                 publicar(productor, p1, "paciente_registrado", "CRITICO", "REGISTRADO");
-                publicar(productor, p1, "paciente_registrado", "CRITICO", "REGISTRADO"); // duplicado (at-least-once)
+                publicar(productor, p1, "paciente_registrado", "CRITICO", "REGISTRADO");
                 publicar(productor, p2, "paciente_registrado", "URGENTE", "REGISTRADO");
                 publicar(productor, p2, "paciente_en_consulta", "URGENTE", "EN_CONSULTA");
                 publicar(productor, p2, "paciente_alta", "URGENTE", "ALTA");
                 publicar(productor, p3, "paciente_registrado", "NO_URGENTE", "REGISTRADO");
                 publicar(productor, p3, "paciente_escalado", "NO_URGENTE", "REGISTRADO");
-                publicar(productor, p2, "paciente_alta", "URGENTE", "ALTA");                // alta repetida
+                publicar(productor, p2, "paciente_alta", "URGENTE", "ALTA");
                 productor.flush();
             }
 
@@ -224,7 +216,6 @@ class AsistenteApiIT {
     @Nested
     @DisplayName("Seguridad y observabilidad")
     class Transversales {
-
         @Test
         void sinApiKeyResponde401() {
             cliente.post().uri("/asistente/consulta").header("Content-Type", "application/json")

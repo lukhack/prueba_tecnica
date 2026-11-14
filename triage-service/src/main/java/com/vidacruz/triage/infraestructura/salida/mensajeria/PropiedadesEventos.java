@@ -2,10 +2,8 @@ package com.vidacruz.triage.infraestructura.salida.mensajeria;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-/** Configuración de los eventos de integración ({@code triage.eventos.*}). */
 @ConfigurationProperties(prefix = "triage.eventos")
 public record PropiedadesEventos(String topic, int particiones) {
-
     public PropiedadesEventos {
         if (topic == null || topic.isBlank()) {
             topic = "triaje.eventos";

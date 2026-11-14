@@ -2,12 +2,7 @@ package com.vidacruz.asistente.dominio.modelo;
 
 import java.util.List;
 
-/**
- * Respuesta final del asistente (RF-04 parte A). O bien está sustentada en al menos una fuente
- * válida del corpus, o bien es exclusivamente el aviso de "no existe protocolo disponible" (RN-05).
- */
 public record RespuestaAsistente(String respuesta, List<Fuente> fuentes) {
-
     public static final String AVISO_SIN_PROTOCOLO =
             "No existe un protocolo disponible en el corpus oficial para esta consulta. "
                     + "No se genera contenido clínico sin respaldo documental.";

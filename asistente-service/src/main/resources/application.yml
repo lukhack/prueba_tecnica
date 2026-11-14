@@ -2,8 +2,6 @@ spring:
   application:
     name: asistente-service
   ai:
-    # Proveedor compatible con la API de OpenAI (OpenAI, Azure OpenAI vía proxy, Groq, Ollama, etc.).
-    # La API key SIEMPRE llega por variable de entorno (nunca se commitea).
     openai:
       api-key: ${LLM_API_KEY}
       base-url: ${LLM_BASE_URL:https://api.openai.com}
@@ -35,7 +33,7 @@ server:
 asistente:
   eventos:
     topic: triaje.eventos
-  rag:                               # ver docs/adr/ADR-002
+  rag:
     fragmentos-a-recuperar: 4
     umbral-similitud: ${RAG_UMBRAL_SIMILITUD:0.30}
     timeout-llm: ${LLM_TIMEOUT:20s}
@@ -46,7 +44,7 @@ seguridad:
 resilience4j:
   circuitbreaker:
     instances:
-      proveedorIa:                   # ver docs/adr/ADR-003 (modo degradado)
+      proveedorIa:
         sliding-window-type: COUNT_BASED
         sliding-window-size: 10
         minimum-number-of-calls: 4
@@ -76,7 +74,6 @@ management:
   tracing:
     sampling:
       probability: 1.0
-  # Trazado distribuido (bonus): el exportador OTLP se activa solo si existe MANAGEMENT_OTLP_TRACING_ENDPOINT.
 
 logging:
   level:

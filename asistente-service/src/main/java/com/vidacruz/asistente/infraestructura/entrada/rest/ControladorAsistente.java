@@ -12,11 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
 
-/** Adaptador de entrada REST para RF-04. */
 @RestController
 @RequestMapping("/asistente")
 public class ControladorAsistente {
-
     private final ManejadorConsultarAsistente consultar;
     private final ManejadorConsultarEstadoUrgencias estadoUrgencias;
 

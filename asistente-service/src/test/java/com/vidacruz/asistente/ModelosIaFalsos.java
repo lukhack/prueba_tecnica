@@ -24,19 +24,8 @@ import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
-/**
- * Dobles del proveedor de IA para tests: el LLM es mockeable y los tests no necesitan red ni API key.
- *
- * <ul>
- *   <li>{@link EmbeddingModelFalso}: vector "bolsa de palabras" (hash de tokens) normalizado; la similitud
- *       coseno aproxima el solapamiento léxico, suficiente para ejercitar el RAG de extremo a extremo.</li>
- *   <li>{@link ChatModelFalso}: responde JSON según palabras clave de la pregunta y permite simular
- *       un proveedor caído o un modelo que inventa citas.</li>
- * </ul>
- */
 @TestConfiguration
 public class ModelosIaFalsos {
-
     @Bean
     public EmbeddingModel embeddingModelFalso() {
         return new EmbeddingModelFalso();
@@ -47,10 +36,7 @@ public class ModelosIaFalsos {
         return new ChatModelFalso();
     }
 
-    // ------------------------------------------------------------------
-
     public static class EmbeddingModelFalso implements EmbeddingModel {
-
         static final int DIMENSIONES = 512;
         static final Set<String> PALABRAS_VACIAS = Set.of("para", "ante", "cual", "cuales", "cuando", "como",
                 "unos", "unas", "este", "esta", "tras", "entre", "sobre", "hacia", "desde", "hasta", "donde");
@@ -88,10 +74,7 @@ public class ModelosIaFalsos {
         }
     }
 
-    // ------------------------------------------------------------------
-
     public static class ChatModelFalso implements ChatModel {
-
         public enum Modo { NORMAL, CAIDO, ALUCINA }
 
         public static final AtomicReference<Modo> MODO = new AtomicReference<>(Modo.NORMAL);
@@ -125,7 +108,7 @@ public class ModelosIaFalsos {
                 json = """
                         {"respuesta": "", "fuentes": [], "sinProtocolo": true}""";
             }
-            // Se emite en dos trozos para ejercitar la concatenación del streaming.
+
             int mitad = json.length() / 2;
             return Flux.just(trozo(json.substring(0, mitad)), trozo(json.substring(mitad)));
         }

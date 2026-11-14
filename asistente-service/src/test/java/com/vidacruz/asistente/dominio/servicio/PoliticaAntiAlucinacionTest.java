@@ -13,7 +13,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("RN-05: política anti-alucinación")
 class PoliticaAntiAlucinacionTest {
-
     private static final FragmentoProtocolo MEDIDAS_001 = new FragmentoProtocolo(
             "PROTO-001", "Crisis Hipertensiva, manejo inicial", "Medidas iniciales", "Reconfirmar la presión...", 0.82);
     private static final FragmentoProtocolo CRITERIOS_002 = new FragmentoProtocolo(

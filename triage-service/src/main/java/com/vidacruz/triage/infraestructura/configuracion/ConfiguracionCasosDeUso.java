@@ -21,15 +21,10 @@ import org.springframework.transaction.reactive.TransactionalOperator;
 
 import java.time.Clock;
 
-/**
- * Ensamblado explícito de la aplicación: el dominio y los casos de uso no llevan anotaciones de Spring;
- * aquí se conectan con los adaptadores (inyección de dependencias por constructor).
- */
 @Configuration
 @EnableConfigurationProperties({PropiedadesSla.class, PropiedadesEscalamiento.class,
         PropiedadesSeguridad.class, PropiedadesAlertas.class})
 public class ConfiguracionCasosDeUso {
-
     @Bean
     public Clock reloj() {
         return Clock.systemUTC();

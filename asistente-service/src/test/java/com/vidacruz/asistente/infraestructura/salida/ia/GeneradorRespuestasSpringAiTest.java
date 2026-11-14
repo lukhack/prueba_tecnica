@@ -15,7 +15,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 
 class GeneradorRespuestasSpringAiTest {
-
     private final GeneradorRespuestasSpringAi generador = new GeneradorRespuestasSpringAi(
             mock(ChatModel.class), new ObjectMapper(), CircuitBreaker.ofDefaults("test"),
             Duration.ofSeconds(5), new SimpleMeterRegistry());

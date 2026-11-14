@@ -1,5 +1,3 @@
-# Punto de entrada público (NGINX Ingress Controller o el Application Routing add-on de AKS).
-# Las APIs quedan expuestas bajo /triage/** y /asistente/**; la autenticación por X-API-Key la hace cada servicio.
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:

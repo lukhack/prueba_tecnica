@@ -1,9 +1,5 @@
 package com.vidacruz.triage.dominio.modelo;
 
-/**
- * Niveles de triaje definidos en la RN-01, ordenados de mayor a menor gravedad.
- * El orden del enum es significativo: un ordinal menor significa mayor gravedad.
- */
 public enum NivelTriaje {
     CRITICO(1),
     URGENTE(2),

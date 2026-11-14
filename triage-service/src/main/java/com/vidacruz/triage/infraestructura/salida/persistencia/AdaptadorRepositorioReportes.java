@@ -13,21 +13,8 @@ import java.time.OffsetDateTime;
 import java.util.EnumMap;
 import java.util.Map;
 
-/**
- * Adaptador del puerto {@link RepositorioReportes} (RF-05).
- *
- * <p>Toda la agregación ocurre en PostgreSQL:</p>
- * <ul>
- *   <li>CTE {@code primera_consulta}: window function {@code ROW_NUMBER() OVER (PARTITION BY ... ORDER BY ...)}
- *       para obtener la <em>primera</em> entrada a consulta de cada paciente desde la auditoría.</li>
- *   <li>CTE {@code esperas}: tiempo de espera en minutos (registro → primera consulta) por paciente.</li>
- *   <li>Consulta final: {@code COUNT(*) FILTER (WHERE ...)} por nivel, {@code AVG} y
- *       {@code PERCENTILE_CONT(0.95) WITHIN GROUP} agrupados por hora.</li>
- * </ul>
- */
 @Repository
 public class AdaptadorRepositorioReportes implements RepositorioReportes {
-
     static final String SQL_RESUMEN_POR_HORA = """
             WITH primera_consulta AS (
                 SELECT paciente_id, "timestamp" AS fecha_consulta

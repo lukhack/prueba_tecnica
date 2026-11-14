@@ -13,12 +13,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("RN-01: clasificación por nivel de triaje")
 class ClasificadorTriajeTest {
-
     private final ClasificadorTriaje clasificador = new ClasificadorTriaje();
 
     @ParameterizedTest(name = "{0}: FC={1} PS={2} PD={3} SpO2={4} T={5} dolor={6} GCS={7} \"{8}\" → {9}")
     @CsvSource({
-            // Pacientes de ejemplo del enunciado (Datos de Referencia)
             "E1, 130, 180, 110, 97, 36.8, 8, 15, Dolor torácico,          CRITICO",
             "E2,  95, 150,  95, 91, 37.0, 4, 15, Dificultad para respirar, URGENTE",
             "E3,  88, 130,  85, 98, 38.2, 6, 15, Fiebre,                   URGENTE_2",
@@ -35,22 +33,21 @@ class ClasificadorTriajeTest {
 
     @ParameterizedTest(name = "límite: FC={0} PS={1} SpO2={2} T={3} dolor={4} GCS={5} → {6}")
     @CsvSource({
-            // Bordes de cada condición de la RN-01
-            " 39, 120, 97, 36.5, 0, 15, CRITICO",      // FC < 40
-            "121, 120, 97, 36.5, 0, 15, CRITICO",      // FC > 120
-            " 70, 120, 89, 36.5, 0, 15, CRITICO",      // SpO2 < 90
-            " 70,  89, 97, 36.5, 0, 15, CRITICO",      // P. sistólica < 90
-            " 70, 120, 97, 36.5, 0,  8, CRITICO",      // GCS <= 8
-            " 70, 120, 93, 36.5, 0, 15, URGENTE",      // SpO2 en [90,93]
-            " 70, 100, 97, 36.5, 0, 15, URGENTE",      // P. sistólica en [90,100]
-            " 70, 120, 97, 38.5, 0, 15, URGENTE",      // Temp >= 38.5
-            " 70, 120, 97, 36.5, 0, 13, URGENTE",      // GCS en [9,13]
-            " 90, 120, 97, 36.5, 0, 15, URGENTE_2",    // FC en [90,120]
-            "120, 120, 97, 36.5, 0, 15, URGENTE_2",    // FC en [90,120] (borde superior)
-            " 70, 120, 97, 38.0, 0, 15, URGENTE_2",    // Temp en [38.0,38.5)
+            " 39, 120, 97, 36.5, 0, 15, CRITICO",
+            "121, 120, 97, 36.5, 0, 15, CRITICO",
+            " 70, 120, 89, 36.5, 0, 15, CRITICO",
+            " 70,  89, 97, 36.5, 0, 15, CRITICO",
+            " 70, 120, 97, 36.5, 0,  8, CRITICO",
+            " 70, 120, 93, 36.5, 0, 15, URGENTE",
+            " 70, 100, 97, 36.5, 0, 15, URGENTE",
+            " 70, 120, 97, 38.5, 0, 15, URGENTE",
+            " 70, 120, 97, 36.5, 0, 13, URGENTE",
+            " 90, 120, 97, 36.5, 0, 15, URGENTE_2",
+            "120, 120, 97, 36.5, 0, 15, URGENTE_2",
+            " 70, 120, 97, 38.0, 0, 15, URGENTE_2",
             " 70, 120, 97, 38.4, 0, 15, URGENTE_2",
-            " 70, 120, 97, 36.5, 7, 15, URGENTE_2",    // Dolor >= 7
-            " 70, 120, 97, 36.5, 6, 14, NO_URGENTE",   // ninguna condición
+            " 70, 120, 97, 36.5, 7, 15, URGENTE_2",
+            " 70, 120, 97, 36.5, 6, 14, NO_URGENTE",
     })
     void respetaLosBordesDeCadaCondicion(int fc, int ps, int spo2, String temp, int dolor, int gcs, NivelTriaje esperado) {
         SignosVitales signos = new SignosVitales(fc, ps, 60, spo2, new BigDecimal(temp), dolor, gcs);
@@ -60,7 +57,6 @@ class ClasificadorTriajeTest {
 
     @Test
     void cuandoSeCumplenCondicionesDeVariosNivelesRigeElMasGrave() {
-        // SpO2 91 (URGENTE) + FC 95 (URGENTE_2) + dolor 9 (URGENTE_2) → URGENTE
         SignosVitales signos = new SignosVitales(95, 150, 95, 91, new BigDecimal("37.0"), 9, 15);
 
         assertThat(clasificador.clasificar(signos, "Dolor")).isEqualTo(NivelTriaje.URGENTE);

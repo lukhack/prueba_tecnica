@@ -8,14 +8,7 @@ import java.time.Instant;
 import java.util.Objects;
 import java.util.UUID;
 
-/**
- * Agregado raíz del triaje. Concentra las reglas de negocio sobre el ciclo de vida del paciente:
- * flujo de estados (RF-02), control de SLA y escalamiento idempotente (RF-03, RN-03).
- *
- * <p>Es una clase de dominio pura: no depende de Spring, de la base de datos ni de Kafka.</p>
- */
 public class Paciente {
-
     private final UUID id;
     private final String nombreCompleto;
     private final int edad;
@@ -50,7 +43,6 @@ public class Paciente {
         this.fechaEscalamiento = fechaEscalamiento;
     }
 
-    /** Crea un paciente recién llegado a recepción, ya clasificado, en estado REGISTRADO (RF-01). */
     public static Paciente registrar(String nombreCompleto, int edad, SignosVitales signosVitales,
                                      String quejaPrincipal, NivelTriaje nivel, Instant ahora) {
         String nombre = nombreCompleto == null ? "" : nombreCompleto.trim();
@@ -70,7 +62,6 @@ public class Paciente {
                 EstadoPaciente.REGISTRADO, false, ahora, ahora, null, null, null);
     }
 
-    /** Reconstruye el agregado desde la persistencia, sin volver a validar ni clasificar. */
     public static Paciente reconstruir(UUID id, String nombreCompleto, int edad, SignosVitales signosVitales,
                                        String quejaPrincipal, NivelTriaje nivel, EstadoPaciente estado, boolean escalado,
                                        Instant fechaRegistro, Instant fechaUltimoCambioEstado, Instant fechaEntradaConsulta,
@@ -79,14 +70,6 @@ public class Paciente {
                 fechaRegistro, fechaUltimoCambioEstado, fechaEntradaConsulta, fechaAlta, fechaEscalamiento);
     }
 
-    // ----- Comportamiento de negocio -----
-
-    /**
-     * Aplica una transición del flujo clínico (RF-02).
-     *
-     * @return el estado anterior, necesario para la auditoría
-     * @throws ExcepcionTransicionInvalida si la transición no está permitida
-     */
     public EstadoPaciente cambiarEstado(EstadoPaciente nuevoEstado, Instant ahora) {
         Objects.requireNonNull(nuevoEstado, "nuevoEstado");
         if (!estado.puedeTransicionarA(nuevoEstado)) {
@@ -104,22 +87,14 @@ public class Paciente {
         return anterior;
     }
 
-    /** RN-02: el SLA se mide desde el registro hasta la entrada a consulta. */
     public boolean haSuperadoSla(Duration sla, Instant ahora) {
         return puedeSerEscalado() && !ahora.isBefore(fechaRegistro.plus(sla));
     }
 
-    /** RN-03: solo se escala una vez y solo mientras el paciente sigue esperando (REGISTRADO). */
     public boolean puedeSerEscalado() {
         return estado == EstadoPaciente.REGISTRADO && !escalado;
     }
 
-    /**
-     * Marca el paciente como escalado (flag persistente, RF-03).
-     *
-     * @return {@code true} si el escalamiento se aplicó; {@code false} si ya estaba escalado
-     *         o ya no está esperando (idempotencia, RN-03)
-     */
     public boolean escalar(Instant ahora) {
         if (!puedeSerEscalado()) {
             return false;
@@ -132,8 +107,6 @@ public class Paciente {
     public Duration tiempoEnEstadoActual(Instant ahora) {
         return Duration.between(fechaUltimoCambioEstado, ahora);
     }
-
-    // ----- Accesores -----
 
     public UUID id() { return id; }
     public String nombreCompleto() { return nombreCompleto; }

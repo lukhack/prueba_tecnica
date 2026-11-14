@@ -9,10 +9,8 @@ import org.springframework.stereotype.Component;
 import java.util.EnumMap;
 import java.util.Map;
 
-/** Adaptador Micrometer del puerto {@link MetricasTriaje}. Los contadores se registran al inicio para que existan en 0. */
 @Component
 public class AdaptadorMetricasMicrometer implements MetricasTriaje {
-
     static final String METRICA_CLASIFICACIONES = "triage.clasificaciones";
     static final String METRICA_ESCALAMIENTOS = "triage.escalamientos";
 

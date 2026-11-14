@@ -17,16 +17,8 @@ import reactor.util.retry.Retry;
 
 import java.time.Duration;
 
-/**
- * Adaptador de entrada: consume {@code triaje.eventos} con reactor-kafka y proyecta cada evento sobre la vista.
- *
- * <p>Backpressure real: {@code concatMap} procesa un registro a la vez y solo se pide el siguiente cuando
- * el anterior terminó; el offset se confirma manualmente tras aplicar el evento (at-least-once).
- * La vista es idempotente, así que una re-entrega no altera los conteos.</p>
- */
 @Component
 public class ConsumidorEventosTriaje {
-
     private static final Logger log = LoggerFactory.getLogger(ConsumidorEventosTriaje.class);
 
     private final KafkaReceiver<String, String> receiver;
@@ -55,7 +47,6 @@ public class ConsumidorEventosTriaje {
         return Mono.fromCallable(() -> objectMapper.readValue(registro.value(), EventoTriajeRecibido.class))
                 .flatMap(manejador::ejecutar)
                 .onErrorResume(error -> {
-                    // Mensaje malformado o irrecuperable: se registra y se descarta para no bloquear la partición.
                     log.error("Evento descartado (offset {} partición {}): {}", registro.offset(), registro.partition(),
                             error.getMessage());
                     return Mono.empty();

@@ -18,11 +18,9 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.time.Instant;
 
-/** Autenticación por API key en la cabecera {@code X-API-Key}; Actuator queda fuera del filtro. */
 @Component
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class FiltroApiKey implements WebFilter {
-
     public static final String CABECERA = "X-API-Key";
 
     private final byte[] apiKeyEsperada;

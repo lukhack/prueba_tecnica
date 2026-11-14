@@ -6,10 +6,6 @@ import jakarta.validation.constraints.NotNull;
 
 import java.math.BigDecimal;
 
-/**
- * Cuerpo de {@code POST /triage/pacientes}. Aquí solo se exige presencia de campos;
- * los rangos clínicos los valida el dominio ({@code SignosVitales}, {@code Paciente}).
- */
 public record SolicitudRegistrarPaciente(
         @NotBlank(message = "es obligatorio") String nombreCompleto,
         @NotNull(message = "es obligatorio") Integer edad,
@@ -21,7 +17,6 @@ public record SolicitudRegistrarPaciente(
         @NotNull(message = "es obligatorio") Integer dolor,
         @NotNull(message = "es obligatorio") Integer gcs,
         @NotBlank(message = "es obligatoria") String quejaPrincipal) {
-
     public ComandoRegistrarPaciente aComando() {
         return new ComandoRegistrarPaciente(nombreCompleto, edad, frecuenciaCardiaca, presionSistolica,
                 presionDiastolica, spo2, temperatura, dolor, gcs, quejaPrincipal);

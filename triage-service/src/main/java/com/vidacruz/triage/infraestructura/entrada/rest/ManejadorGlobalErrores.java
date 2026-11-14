@@ -17,10 +17,8 @@ import org.springframework.web.server.ServerWebInputException;
 
 import java.time.Instant;
 
-/** Traduce excepciones de dominio y de entrada a respuestas HTTP con el formato {@link RespuestaError}. */
 @RestControllerAdvice
 public class ManejadorGlobalErrores {
-
     private static final Logger log = LoggerFactory.getLogger(ManejadorGlobalErrores.class);
 
     @ExceptionHandler(ExcepcionValorInvalido.class)
@@ -54,7 +52,6 @@ public class ManejadorGlobalErrores {
         return responder(HttpStatus.NOT_FOUND, ex.getMessage(), null, exchange);
     }
 
-    /** Errores que ya traen su estado HTTP (404 de ruta inexistente, 405, 415, etc.): se respetan. */
     @ExceptionHandler(ResponseStatusException.class)
     public ResponseEntity<RespuestaError> conEstado(ResponseStatusException ex, ServerWebExchange exchange) {
         HttpStatus estado = HttpStatus.valueOf(ex.getStatusCode().value());
@@ -75,7 +72,6 @@ public class ManejadorGlobalErrores {
         return ResponseEntity.status(estado).body(cuerpo);
     }
 
-    /** Los mensajes de Jackson son largos; se recorta al primer renglón útil. */
     private static String resumir(String causa) {
         int corte = causa.indexOf('\n');
         String primera = corte > 0 ? causa.substring(0, corte) : causa;

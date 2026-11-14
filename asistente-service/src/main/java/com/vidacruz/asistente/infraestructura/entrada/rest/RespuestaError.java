@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.time.Instant;
 
-/** Formato único de error de la API. */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public record RespuestaError(
         Instant timestamp,

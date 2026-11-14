@@ -1,4 +1,3 @@
-# Redis para la vista de estado de urgencias. En producción: Azure Cache for Redis.
 apiVersion: v1
 kind: Service
 metadata:

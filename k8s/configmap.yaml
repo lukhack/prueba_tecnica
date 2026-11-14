@@ -3,7 +3,7 @@ kind: ConfigMap
 metadata:
   name: vidacruz-config
 data:
-  SPRING_PROFILES_ACTIVE: docker        # logs JSON (ECS) con traceId
+  SPRING_PROFILES_ACTIVE: docker
   DB_HOST: postgres
   DB_NAME: triaje
   DB_USER: triaje

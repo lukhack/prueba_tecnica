@@ -3,14 +3,6 @@ package com.vidacruz.triage.dominio.modelo;
 import java.util.EnumSet;
 import java.util.Set;
 
-/**
- * Estados clínicos del paciente y sus transiciones válidas (RF-02).
- *
- * <pre>
- *   REGISTRADO ──► EN_CONSULTA ──► ALTA
- *        └──────────────────────────┘  (alta directa)
- * </pre>
- */
 public enum EstadoPaciente {
     REGISTRADO,
     EN_CONSULTA,
@@ -28,7 +20,6 @@ public enum EstadoPaciente {
         return siguientes.contains(destino);
     }
 
-    /** Un paciente activo es todo aquel que no ha sido dado de alta. */
     public boolean esActivo() {
         return this != ALTA;
     }

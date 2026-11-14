@@ -9,7 +9,6 @@ spring:
       initial-size: 5
       max-size: 20
   flyway:
-    # Flyway usa JDBC solo durante el arranque (migraciones); el tráfico va por R2DBC.
     url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:triaje}
     user: ${DB_USER:triaje}
     password: ${DB_PASSWORD:triaje}
@@ -22,13 +21,13 @@ spring:
       properties:
         enable.idempotence: true
   reactor:
-    context-propagation: auto   # propaga traceId/spanId a los logs dentro de cadenas reactivas
+    context-propagation: auto
 
 server:
   port: ${PORT:8081}
 
 triage:
-  sla:                          # RN-02 (configurable para probar el escalamiento sin esperar)
+  sla:
     critico: ${SLA_CRITICO:5m}
     urgente: ${SLA_URGENTE:10m}
     urgente2: ${SLA_URGENTE_2:30m}
@@ -40,7 +39,7 @@ triage:
   eventos:
     topic: triaje.eventos
     particiones: 3
-  alertas:                      # RF-06 (ver docs/adr/ADR-004)
+  alertas:
     webhook-url: ${ALERTAS_WEBHOOK_URL:}
     timeout: 3s
 
@@ -76,8 +75,6 @@ management:
   tracing:
     sampling:
       probability: 1.0
-  # Trazado distribuido (bonus): el exportador OTLP se activa solo si existe la variable
-  # MANAGEMENT_OTLP_TRACING_ENDPOINT (p. ej. http://otel-collector:4318/v1/traces).
 
 logging:
   level:

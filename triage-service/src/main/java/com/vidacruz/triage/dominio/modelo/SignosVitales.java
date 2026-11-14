@@ -4,10 +4,6 @@ import com.vidacruz.triage.dominio.excepcion.ExcepcionValorInvalido;
 
 import java.math.BigDecimal;
 
-/**
- * Signos vitales tomados en recepción. Es un objeto de valor inmutable:
- * si se construye, es válido (rangos de la sección "Validaciones de datos", RF-01).
- */
 public record SignosVitales(
         int frecuenciaCardiaca,
         int presionSistolica,
@@ -16,7 +12,6 @@ public record SignosVitales(
         BigDecimal temperatura,
         int dolor,
         int gcs) {
-
     public SignosVitales {
         validarRango("frecuenciaCardiaca", frecuenciaCardiaca, 20, 250, "bpm");
         validarRango("presionSistolica", presionSistolica, 60, 260, "mmHg");
@@ -44,8 +39,6 @@ public record SignosVitales(
                     "El campo " + campo + " debe estar entre " + minimo + " y " + maximo + sufijo + " (recibido: " + valor + ")");
         }
     }
-
-    // Helpers de lectura usados por la RN-01
 
     public boolean temperaturaMayorOIgual(String valor) {
         return temperatura.compareTo(new BigDecimal(valor)) >= 0;

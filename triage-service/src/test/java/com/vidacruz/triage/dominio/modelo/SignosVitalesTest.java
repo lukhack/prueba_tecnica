@@ -13,7 +13,6 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @DisplayName("RF-01: validaciones de rangos de signos vitales")
 class SignosVitalesTest {
-
     @Test
     void aceptaValoresDentroDeRango() {
         assertThatCode(() -> new SignosVitales(20, 260, 30, 70, new BigDecimal("34.0"), 0, 3)).doesNotThrowAnyException();

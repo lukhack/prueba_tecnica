@@ -6,9 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
 
-/** Caso de uso: proyectar un evento de triaje sobre la vista de estado de urgencias. */
 public class ManejadorProcesarEventoTriaje {
-
     private static final Logger log = LoggerFactory.getLogger(ManejadorProcesarEventoTriaje.class);
 
     private final VistaEstadoUrgencias vista;

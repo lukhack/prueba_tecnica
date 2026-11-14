@@ -8,10 +8,8 @@ import org.springframework.stereotype.Component;
 import java.util.EnumMap;
 import java.util.Map;
 
-/** Adaptador Micrometer del puerto {@link MetricasAsistente}. */
 @Component
 public class AdaptadorMetricasMicrometer implements MetricasAsistente {
-
     static final String METRICA_CONSULTAS = "asistente.consultas";
 
     private final Map<ResultadoConsulta, Counter> consultas = new EnumMap<>(ResultadoConsulta.class);

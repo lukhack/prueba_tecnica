@@ -1,6 +1,3 @@
--- Esquema del servicio de Triage.
--- Convención: nombres en español, snake_case, timestamps con zona horaria (UTC).
-
 CREATE TABLE pacientes (
     id                          UUID PRIMARY KEY,
     nombre_completo             VARCHAR(100)  NOT NULL,
@@ -25,11 +22,9 @@ CREATE TABLE pacientes (
     CONSTRAINT chk_presion CHECK (presion_diastolica < presion_sistolica)
 );
 
--- El monitor de SLA consulta repetidamente los pacientes en espera: índice parcial pequeño y selectivo.
 CREATE INDEX idx_pacientes_en_espera ON pacientes (fecha_registro)
     WHERE estado = 'REGISTRADO' AND escalado = FALSE;
 
--- El reporte de operación filtra por rango de fecha de registro.
 CREATE INDEX idx_pacientes_fecha_registro ON pacientes (fecha_registro);
 
 CREATE TABLE auditoria_clinica (
@@ -44,8 +39,6 @@ CREATE TABLE auditoria_clinica (
 CREATE INDEX idx_auditoria_paciente ON auditoria_clinica (paciente_id, "timestamp");
 CREATE INDEX idx_auditoria_tipo_evento ON auditoria_clinica (tipo_evento, paciente_id, "timestamp");
 
--- RN-04: la auditoría no es borrable. Además de no exponer endpoint de eliminación,
--- se bloquea a nivel de base de datos cualquier DELETE o UPDATE sobre la tabla.
 CREATE OR REPLACE FUNCTION impedir_modificacion_auditoria() RETURNS trigger AS $$
 BEGIN
     RAISE EXCEPTION 'La auditoría clínica es inmutable: no se permite % sobre auditoria_clinica', TG_OP;

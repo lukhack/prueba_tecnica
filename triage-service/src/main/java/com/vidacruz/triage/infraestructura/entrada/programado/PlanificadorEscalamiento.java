@@ -12,16 +12,8 @@ import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/**
- * Adaptador de entrada "programado" (RF-03): dispara periódicamente el caso de uso de escalamiento.
- *
- * <p>Se implementa con {@code Flux.interval} + {@code concatMap} en lugar de {@code @Scheduled}:
- * así un ciclo nunca se solapa con el anterior y todo corre dentro del modelo reactivo
- * sin bloquear hilos del event loop.</p>
- */
 @Component
 public class PlanificadorEscalamiento {
-
     private static final Logger log = LoggerFactory.getLogger(PlanificadorEscalamiento.class);
 
     private final ManejadorEscalarPacientesVencidos manejador;
@@ -41,7 +33,7 @@ public class PlanificadorEscalamiento {
         }
         log.info("Monitor de SLA iniciado: evaluación cada {}", propiedades.intervalo());
         suscripcion = Flux.interval(propiedades.intervalo())
-                .onBackpressureDrop() // si un ciclo tarda más que el intervalo, se omite el tick, no se acumula
+                .onBackpressureDrop()
                 .concatMap(tick -> manejador.ejecutar()
                         .doOnNext(escalados -> {
                             if (escalados > 0) {

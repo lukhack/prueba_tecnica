@@ -19,14 +19,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-/**
- * Adaptador del puerto {@link BuscadorProtocolos} sobre un vector store de Spring AI (ver ADR-002).
- *
- * <p>El vector store y el modelo de embeddings de Spring AI son APIs bloqueantes; por eso cada llamada
- * se delega al scheduler {@code boundedElastic} y nunca ocupa un hilo del event loop de Netty.</p>
- */
 public class IndiceVectorialProtocolos implements BuscadorProtocolos {
-
     static final String META_PROTOCOLO = "protocolo";
     static final String META_TITULO = "titulo";
     static final String META_SECCION = "seccion";
@@ -44,7 +37,6 @@ public class IndiceVectorialProtocolos implements BuscadorProtocolos {
         this.circuitBreaker = circuitBreaker;
     }
 
-    /** Indexa el corpus en segundo plano con reintentos: un proveedor caído al arrancar no tumba el servicio. */
     public Mono<Void> indexarCorpus() {
         return Mono.fromRunnable(() -> {
                     List<Document> documentos = cargador.cargar().stream()
@@ -80,7 +72,6 @@ public class IndiceVectorialProtocolos implements BuscadorProtocolos {
     }
 
     static Document aDocumento(FragmentoProtocolo f) {
-        // Se incluye el título y la sección en el texto embebido: mejora la recuperación por tema.
         String texto = f.protocolo() + " — " + f.titulo() + " — " + f.seccion() + ": " + f.contenido();
         return new Document(texto, Map.of(META_PROTOCOLO, f.protocolo(), META_TITULO, f.titulo(),
                 META_SECCION, f.seccion(), "contenido", f.contenido()));

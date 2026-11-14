@@ -13,13 +13,8 @@ import java.util.UUID;
 import static org.springframework.data.relational.core.query.Criteria.where;
 import static org.springframework.data.relational.core.query.Query.query;
 
-/**
- * Adaptador R2DBC del puerto {@link RepositorioAuditoria}.
- * Solo inserta y consulta: la inmutabilidad la refuerza además un trigger en la base de datos.
- */
 @Repository
 public class AdaptadorRepositorioAuditoria implements RepositorioAuditoria {
-
     private final R2dbcEntityTemplate template;
 
     public AdaptadorRepositorioAuditoria(R2dbcEntityTemplate template) {

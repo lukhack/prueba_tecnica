@@ -15,16 +15,8 @@ import reactor.util.retry.Retry;
 import java.time.Duration;
 import java.util.Map;
 
-/**
- * Adaptador del puerto {@link NotificadorEquipoMedico} (RF-06, ver ADR-004).
- *
- * <p>Envía la alerta a un webhook HTTP (formato compatible con Slack / Microsoft Teams: campo {@code text})
- * protegido por timeout, reintentos y circuit breaker. Si no hay webhook configurado, la alerta se emite
- * como log estructurado de nivel WARN, que cualquier plataforma de observabilidad puede enrutar.</p>
- */
 @Component
 public class AdaptadorNotificadorWebhook implements NotificadorEquipoMedico {
-
     static final String NOMBRE_CIRCUIT_BREAKER = "alertasWebhook";
 
     private static final Logger log = LoggerFactory.getLogger(AdaptadorNotificadorWebhook.class);
@@ -44,7 +36,7 @@ public class AdaptadorNotificadorWebhook implements NotificadorEquipoMedico {
     @Override
     public Mono<Void> notificarEscalamiento(Paciente paciente, Duration tiempoEsperando) {
         String texto = construirTexto(paciente, tiempoEsperando);
-        // Siempre queda traza en el log de alertas, haya o no webhook.
+
         logAlertas.warn("ALERTA_ESCALAMIENTO pacienteId={} nivel={} minutosEsperando={} mensaje=\"{}\"",
                 paciente.id(), paciente.nivel(), tiempoEsperando.toMinutes(), texto);
 

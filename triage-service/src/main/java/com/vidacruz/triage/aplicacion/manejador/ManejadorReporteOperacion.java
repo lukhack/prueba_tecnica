@@ -8,10 +8,7 @@ import reactor.core.publisher.Mono;
 import java.time.Duration;
 import java.time.Instant;
 
-/** Caso de uso RF-05: reporte de operación por hora en un rango de fechas. */
 public class ManejadorReporteOperacion {
-
-    /** Rango máximo consultable para evitar reportes desmedidos. */
     static final Duration RANGO_MAXIMO = Duration.ofDays(31);
 
     private final RepositorioReportes reportes;

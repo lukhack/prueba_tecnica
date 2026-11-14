@@ -6,11 +6,6 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import java.time.Duration;
 
-/**
- * SLA por nivel (RN-02) leído de configuración ({@code triage.sla.*}). Implementa directamente el
- * puerto {@link PoliticaSla}: es el adaptador más simple posible.
- * Los valores por defecto son los de la regla de negocio; se pueden acortar para probar el escalamiento.
- */
 @ConfigurationProperties(prefix = "triage.sla")
 public record PropiedadesSla(
         Duration critico,
@@ -18,7 +13,6 @@ public record PropiedadesSla(
         Duration urgente2,
         Duration noUrgente,
         Duration noUrgente2) implements PoliticaSla {
-
     public PropiedadesSla {
         critico = oPorDefecto(critico, 5);
         urgente = oPorDefecto(urgente, 10);

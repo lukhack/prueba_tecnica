@@ -16,13 +16,10 @@ import org.springframework.web.server.ServerWebInputException;
 
 import java.time.Instant;
 
-/** Traduce excepciones de dominio y de entrada a respuestas HTTP con el formato {@link RespuestaError}. */
 @RestControllerAdvice
 public class ManejadorGlobalErrores {
-
     private static final Logger log = LoggerFactory.getLogger(ManejadorGlobalErrores.class);
 
-    /** Modo degradado explícito (requisito técnico): 503 con mensaje claro cuando el LLM no está disponible. */
     @ExceptionHandler(ExcepcionProveedorIaNoDisponible.class)
     public ResponseEntity<RespuestaError> proveedorNoDisponible(ExcepcionProveedorIaNoDisponible ex, ServerWebExchange exchange) {
         log.warn("Modo degradado: {}", ex.getMessage());

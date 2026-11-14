@@ -20,13 +20,7 @@ import reactor.core.publisher.Mono;
 import java.time.Clock;
 import java.time.Instant;
 
-/**
- * Caso de uso RF-02: transición del flujo clínico.
- * La validez de la transición la decide el agregado {@link Paciente}; aquí solo se orquesta
- * persistencia, auditoría (RN-04) y publicación del evento correspondiente.
- */
 public class ManejadorCambiarEstado {
-
     private static final Logger log = LoggerFactory.getLogger(ManejadorCambiarEstado.class);
 
     private final RepositorioPacientes pacientes;
@@ -56,7 +50,7 @@ public class ManejadorCambiarEstado {
 
     private Mono<Paciente> transicionar(Paciente paciente, EstadoPaciente nuevoEstado) {
         Instant ahora = reloj.instant();
-        // Si la transición no es válida, el dominio lanza ExcepcionTransicionInvalida (→ 409).
+
         EstadoPaciente anterior = paciente.cambiarEstado(nuevoEstado, ahora);
 
         return pacientes.actualizar(paciente)

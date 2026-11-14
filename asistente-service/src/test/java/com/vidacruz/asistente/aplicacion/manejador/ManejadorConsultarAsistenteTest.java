@@ -31,7 +31,6 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class ManejadorConsultarAsistenteTest {
-
     private static final FragmentoProtocolo MEDIDAS_001 = new FragmentoProtocolo(
             "PROTO-001", "Crisis Hipertensiva, manejo inicial", "Medidas iniciales", "Reconfirmar...", 0.80);
     private static final FragmentoProtocolo LEJANO_003 = new FragmentoProtocolo(
@@ -61,7 +60,6 @@ class ManejadorConsultarAsistenteTest {
                 })
                 .verifyComplete();
 
-        // Solo se entregan al modelo los fragmentos relevantes (el de puntaje 0.10 queda fuera).
         verify(generador).generar(anyString(), org.mockito.ArgumentMatchers.eq(List.of(MEDIDAS_001)));
         verify(metricas).registrarConsulta(ResultadoConsulta.CON_FUENTES);
     }

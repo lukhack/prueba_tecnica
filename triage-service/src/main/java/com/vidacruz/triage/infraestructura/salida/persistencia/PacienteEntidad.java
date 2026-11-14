@@ -14,13 +14,8 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.UUID;
 
-/**
- * Fila de la tabla {@code pacientes}. Es un detalle de infraestructura: el dominio nunca la ve.
- * La conversión hacia/desde {@link Paciente} vive aquí mismo para mantener el mapeo en un solo lugar.
- */
 @Table("pacientes")
 public class PacienteEntidad {
-
     @Id
     private UUID id;
     @Column("nombre_completo")
@@ -51,7 +46,7 @@ public class PacienteEntidad {
     private OffsetDateTime fechaAlta;
     @Column("fecha_escalamiento")
     private OffsetDateTime fechaEscalamiento;
-    /** Contador de cambios; lo incrementan las sentencias UPDATE explícitas del adaptador. */
+
     private Long version;
 
     public static PacienteEntidad desde(Paciente p) {

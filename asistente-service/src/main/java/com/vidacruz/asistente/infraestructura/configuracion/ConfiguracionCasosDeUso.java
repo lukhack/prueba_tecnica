@@ -12,11 +12,9 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-/** Ensamblado explícito: dominio y casos de uso sin anotaciones de Spring, conectados aquí a los adaptadores. */
 @Configuration
 @EnableConfigurationProperties({PropiedadesRag.class, PropiedadesSeguridad.class})
 public class ConfiguracionCasosDeUso {
-
     @Bean
     public PoliticaAntiAlucinacion politicaAntiAlucinacion(PropiedadesRag rag) {
         return new PoliticaAntiAlucinacion(rag.umbralSimilitud());

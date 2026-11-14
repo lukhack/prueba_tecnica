@@ -13,20 +13,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/**
- * Lee el corpus oficial desde {@code classpath:protocolos/*.md} y lo parte en fragmentos: uno por sección.
- *
- * <p>Formato de cada archivo (Markdown sencillo, fácil de extender con protocolos propios):</p>
- * <pre>
- * # PROTO-001 — Crisis Hipertensiva, manejo inicial
- * ## Definición
- * texto...
- * ## Medidas iniciales
- * texto...
- * </pre>
- */
 public class CargadorCorpus {
-
     static final String UBICACION = "classpath:protocolos/*.md";
 
     private static final Pattern ENCABEZADO = Pattern.compile("^#\\s+(PROTO-\\d+)\\s*[—–-]\\s*(.+)$");

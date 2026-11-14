@@ -22,11 +22,9 @@ import reactor.core.publisher.Mono;
 
 import java.util.UUID;
 
-/** Adaptador de entrada REST para RF-01 y RF-02. */
 @RestController
 @RequestMapping("/triage/pacientes")
 public class ControladorPacientes {
-
     private final ManejadorRegistrarPaciente registrar;
     private final ManejadorCambiarEstado cambiarEstado;
     private final ManejadorConsultarPaciente consultar;
@@ -57,7 +55,6 @@ public class ControladorPacientes {
         return consultar.ejecutar(id);
     }
 
-    /** Trazabilidad clínica (RN-04): solo lectura, no existe operación de borrado. */
     @GetMapping("/{id}/auditoria")
     public Flux<RegistroAuditoria> auditoria(@PathVariable UUID id) {
         return consultar.ejecutar(id).thenMany(auditoria.buscarPorPaciente(id));

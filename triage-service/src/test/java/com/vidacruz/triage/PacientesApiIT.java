@@ -35,20 +35,15 @@ import java.util.function.Predicate;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-/**
- * Test de integración de extremo a extremo del Servicio de Triage con PostgreSQL y Kafka reales
- * (Testcontainers): API REST → casos de uso → R2DBC → eventos en {@code triaje.eventos}.
- */
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = {
         "seguridad.api-key=clave-de-prueba",
-        "triage.escalamiento.habilitado=false",   // el ciclo se dispara manualmente en el test
-        "triage.sla.critico=0s",                   // un CRITICO vence de inmediato
+        "triage.escalamiento.habilitado=false",
+        "triage.sla.critico=0s",
         "triage.alertas.webhook-url=",
 })
 @Testcontainers
-@AutoConfigureObservability // en tests, Boot desactiva los exportadores de métricas salvo que se pida explícitamente
+@AutoConfigureObservability
 class PacientesApiIT {
-
     @Container
     @ServiceConnection
     static final PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:16-alpine");
@@ -79,8 +74,6 @@ class PacientesApiIT {
     static void cerrarConsumidor() {
         consumidor.close();
     }
-
-    // ---------- Helpers ----------
 
     private static final String E1 = cuerpo("Elena Ruiz", 130, 180, 110, 97, "36.8", 8, 15, "Dolor torácico");
 
@@ -134,7 +127,6 @@ class PacientesApiIT {
         }
     }
 
-    /** Consume el topic hasta encontrar un evento que cumpla la condición (o agota el tiempo). */
     private static List<JsonNode> eventosDe(String pacienteId, String tipo, Duration maximo) {
         Instant limite = Instant.now().plus(maximo);
         while (Instant.now().isBefore(limite)) {
@@ -159,12 +151,9 @@ class PacientesApiIT {
         return resultado;
     }
 
-    // ---------- Tests ----------
-
     @Nested
     @DisplayName("RF-01: registro y clasificación")
     class Registro {
-
         @ParameterizedTest(name = "{0} → {9} (SLA {10} min)")
         @CsvSource({
                 "E1, 130, 180, 110, 97, 36.8, 8, 15, Dolor torácico,          CRITICO,      0",
@@ -217,7 +206,6 @@ class PacientesApiIT {
     @Nested
     @DisplayName("RF-02: flujo de estados y auditoría")
     class FlujoDeEstados {
-
         @Test
         void recorreElFlujoCompletoYAuditaCadaTransicion() {
             String id = registrar(cuerpo("Marta López", 95, 150, 95, 91, "37.0", 4, 15, "Dificultad para respirar"))
@@ -280,10 +268,9 @@ class PacientesApiIT {
     @Nested
     @DisplayName("RF-03 / RN-03: escalamiento idempotente")
     class Escalamiento {
-
         @Test
         void escalaUnaSolaVezAunqueElCicloCorraVariasVeces() {
-            String id = registrar(E1).get("id").asText(); // CRITICO con SLA 0s → vencido
+            String id = registrar(E1).get("id").asText();
 
             Long primera = escalamiento.ejecutar().block(Duration.ofSeconds(30));
             Long segunda = escalamiento.ejecutar().block(Duration.ofSeconds(30));
@@ -301,7 +288,7 @@ class PacientesApiIT {
             assertThat(escalamientosAuditados).isEqualTo(1);
 
             assertThat(eventosDe(id, "paciente_escalado", Duration.ofSeconds(20))).hasSize(1);
-            // Tras el segundo ciclo no aparece un segundo evento para este paciente.
+
             eventosDe(id, "paciente_escalado", Duration.ofSeconds(2));
             assertThat(eventosDe(id, "paciente_escalado", Duration.ZERO)).hasSize(1);
             assertThat(segunda).isNotNull();
@@ -321,7 +308,6 @@ class PacientesApiIT {
     @Nested
     @DisplayName("RF-05: reporte de operación (SQL avanzado)")
     class Reporte {
-
         @Test
         void agrupaPorHoraConConteosPromedioYPercentil() {
             String enConsulta = registrar(cuerpo("Paciente Reporte 1", 88, 130, 85, 98, "38.2", 6, 15, "Fiebre")).get("id").asText();
@@ -366,7 +352,6 @@ class PacientesApiIT {
     @Nested
     @DisplayName("Seguridad y observabilidad")
     class Transversales {
-
         @Test
         void sinApiKeyResponde401() {
             cliente.get().uri("/triage/pacientes/{id}", UUID.randomUUID())

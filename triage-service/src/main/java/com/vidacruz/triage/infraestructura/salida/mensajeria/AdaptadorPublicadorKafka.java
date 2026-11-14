@@ -12,13 +12,8 @@ import reactor.core.publisher.Mono;
 import reactor.kafka.sender.KafkaSender;
 import reactor.kafka.sender.SenderRecord;
 
-/**
- * Adaptador Kafka del puerto {@link PublicadorEventos}: publica eventos JSON en {@code triaje.eventos}.
- * La clave del mensaje es el id del paciente, lo que garantiza orden por paciente dentro de una partición.
- */
 @Component
 public class AdaptadorPublicadorKafka implements PublicadorEventos {
-
     private static final Logger log = LoggerFactory.getLogger(AdaptadorPublicadorKafka.class);
 
     private final KafkaSender<String, String> sender;

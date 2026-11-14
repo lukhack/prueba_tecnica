@@ -1,6 +1,4 @@
 #!/usr/bin/env bash
-# Recorrido de extremo a extremo contra el entorno local (docker compose up).
-# Uso: ./scripts/demo.sh   (lee TRIAGE_API_KEY / ASISTENTE_API_KEY desde .env si existe)
 set -euo pipefail
 cd "$(dirname "$0")/.."
 [ -f .env ] && set -a && . ./.env && set +a
@@ -12,7 +10,6 @@ KA="${ASISTENTE_API_KEY:?Defina ASISTENTE_API_KEY}"
 
 json() { python -c 'import json,sys; print(json.dumps(json.load(sys.stdin), ensure_ascii=False, indent=2))' 2>/dev/null || cat; }
 paso() { printf '\n\033[1;36m== %s ==\033[0m\n' "$*"; }
-# El cuerpo JSON se envía por stdin (--data-binary @-) para que los acentos viajen siempre en UTF-8.
 post() { curl -s -X "$1" "$2" -H "X-API-Key: $3" -H 'Content-Type: application/json; charset=utf-8' --data-binary @-; }
 
 paso "RF-01 Registrar paciente E1 (esperado CRITICO, SLA 5 min)"

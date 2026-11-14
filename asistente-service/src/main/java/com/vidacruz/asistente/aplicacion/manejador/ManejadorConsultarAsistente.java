@@ -16,18 +16,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.List;
 
-/**
- * Caso de uso RF-04 (parte A): consulta en lenguaje natural con RAG.
- *
- * <pre>
- *   pregunta ─► recuperar fragmentos ─► ¿relevantes? ──no──► "no existe protocolo disponible"
- *                                          │ sí
- *                                          ▼
- *                                   generar con LLM ─► validar citas (RN-05) ─► respuesta
- * </pre>
- */
 public class ManejadorConsultarAsistente {
-
     static final int LONGITUD_MAXIMA_PREGUNTA = 1_000;
 
     private static final Logger log = LoggerFactory.getLogger(ManejadorConsultarAsistente.class);

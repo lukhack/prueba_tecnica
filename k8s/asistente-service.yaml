@@ -56,7 +56,6 @@ spec:
             httpGet: { path: /actuator/health/liveness, port: http }
             periodSeconds: 10
           readinessProbe:
-            # Incluye el indicador "corpus": el pod recibe tráfico solo con el índice RAG listo.
             httpGet: { path: /actuator/health/readiness, port: http }
             periodSeconds: 10
           resources:

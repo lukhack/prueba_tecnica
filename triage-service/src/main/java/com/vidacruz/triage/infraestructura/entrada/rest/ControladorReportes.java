@@ -11,18 +11,15 @@ import reactor.core.publisher.Mono;
 
 import java.time.Instant;
 
-/** Adaptador de entrada REST para RF-05. */
 @RestController
 @RequestMapping("/triage/reportes")
 public class ControladorReportes {
-
     private final ManejadorReporteOperacion reporte;
 
     public ControladorReportes(ManejadorReporteOperacion reporte) {
         this.reporte = reporte;
     }
 
-    /** Ejemplo: {@code GET /triage/reportes/operacion?desde=2026-11-14T00:00:00Z&hasta=2026-11-15T00:00:00Z} */
     @GetMapping("/operacion")
     public Mono<RespuestaReporteOperacion> operacion(
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Instant desde,
