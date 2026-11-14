@@ -1,0 +1,39 @@
+# Build
+target/
+*.class
+*.jar
+*.war
+!.mvn/wrapper/maven-wrapper.jar
+
+# IDEs
+.idea/
+*.iml
+.vscode/
+.settings/
+.project
+.classpath
+.factorypath
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Secretos y entorno local (nunca commitear credenciales)
+.env
+*.local.yml
+*.local.yaml
+*.local.properties
+
+# Herramientas de IA / asistentes (no forman parte del entregable)
+.claude/
+CLAUDE.md
+**/CLAUDE.md
+.cursor/
+.copilot/
+.codex/
+.agents/
+graphify-out/
+
+# Logs
+logs/
+*.log
