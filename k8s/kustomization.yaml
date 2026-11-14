@@ -1,0 +1,26 @@
+# Despliegue en Azure Kubernetes Service (AKS):
+#   kubectl apply -k k8s/
+# Antes, cree el Secret real (ver k8s/secret.example.yaml) y publique las imágenes en ACR (scripts/azure-deploy.sh).
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: vidacruz
+
+resources:
+  - namespace.yaml
+  - configmap.yaml
+  - infra/postgres.yaml
+  - infra/kafka.yaml
+  - infra/redis.yaml
+  - triage-service.yaml
+  - asistente-service.yaml
+  - ingress.yaml
+
+# scripts/azure-deploy.sh reemplaza REEMPLAZAR_ACR por el nombre real del Azure Container Registry.
+images:
+  - name: vidacruz/triage-service
+    newName: REEMPLAZAR_ACR.azurecr.io/vidacruz/triage-service
+    newTag: "1.0.0"
+  - name: vidacruz/asistente-service
+    newName: REEMPLAZAR_ACR.azurecr.io/vidacruz/asistente-service
+    newTag: "1.0.0"

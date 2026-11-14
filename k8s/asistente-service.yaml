@@ -1,0 +1,64 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: asistente-service
+  labels:
+    app: asistente-service
+spec:
+  selector:
+    app: asistente-service
+  ports:
+    - name: http
+      port: 80
+      targetPort: 8082
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: asistente-service
+  labels:
+    app: asistente-service
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: asistente-service
+  template:
+    metadata:
+      labels:
+        app: asistente-service
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/path: /actuator/prometheus
+        prometheus.io/port: "8082"
+    spec:
+      securityContext:
+        runAsNonRoot: true
+      containers:
+        - name: asistente-service
+          image: vidacruz/asistente-service:local
+          ports:
+            - name: http
+              containerPort: 8082
+          envFrom:
+            - configMapRef:
+                name: vidacruz-config
+          env:
+            - name: ASISTENTE_API_KEY
+              valueFrom: { secretKeyRef: { name: vidacruz-secrets, key: ASISTENTE_API_KEY } }
+            - name: LLM_API_KEY
+              valueFrom: { secretKeyRef: { name: vidacruz-secrets, key: LLM_API_KEY } }
+          startupProbe:
+            httpGet: { path: /actuator/health/liveness, port: http }
+            periodSeconds: 5
+            failureThreshold: 30
+          livenessProbe:
+            httpGet: { path: /actuator/health/liveness, port: http }
+            periodSeconds: 10
+          readinessProbe:
+            # Incluye el indicador "corpus": el pod recibe tráfico solo con el índice RAG listo.
+            httpGet: { path: /actuator/health/readiness, port: http }
+            periodSeconds: 10
+          resources:
+            requests: { cpu: 250m, memory: 512Mi }
+            limits: { cpu: "1", memory: 768Mi }

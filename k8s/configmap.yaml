@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: vidacruz-config
+data:
+  SPRING_PROFILES_ACTIVE: docker        # logs JSON (ECS) con traceId
+  DB_HOST: postgres
+  DB_NAME: triaje
+  DB_USER: triaje
+  KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+  REDIS_HOST: redis
+  LLM_BASE_URL: https://api.openai.com
+  LLM_CHAT_MODEL: gpt-4o-mini
+  LLM_EMBEDDING_MODEL: text-embedding-3-small
+  RAG_UMBRAL_SIMILITUD: "0.30"
+  ESCALAMIENTO_INTERVALO: 30s
+  SLA_CRITICO: 5m
+  SLA_URGENTE: 10m
+  SLA_URGENTE_2: 30m
+  SLA_NO_URGENTE: 60m
+  SLA_NO_URGENTE_2: 120m
