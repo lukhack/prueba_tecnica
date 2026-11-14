@@ -1,0 +1,6 @@
+# Perfil para contenedores (docker-compose / Kubernetes): logs estructurados en formato ECS
+# (JSON con traceId/spanId para correlación) y endpoints de Actuator listos para probes.
+logging:
+  structured:
+    format:
+      console: ecs
