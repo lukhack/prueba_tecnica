@@ -1,0 +1,83 @@
+spring:
+  application:
+    name: asistente-service
+  ai:
+    # Proveedor compatible con la API de OpenAI (OpenAI, Azure OpenAI vía proxy, Groq, Ollama, etc.).
+    # La API key SIEMPRE llega por variable de entorno (nunca se commitea).
+    openai:
+      api-key: ${LLM_API_KEY}
+      base-url: ${LLM_BASE_URL:https://api.openai.com}
+      chat:
+        options:
+          model: ${LLM_CHAT_MODEL:gpt-4o-mini}
+          temperature: 0.0
+      embedding:
+        options:
+          model: ${LLM_EMBEDDING_MODEL:text-embedding-3-small}
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD:}
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+    consumer:
+      group-id: asistente-service
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+  reactor:
+    context-propagation: auto
+
+server:
+  port: ${PORT:8082}
+
+asistente:
+  eventos:
+    topic: triaje.eventos
+  rag:                               # ver docs/adr/ADR-002
+    fragmentos-a-recuperar: 4
+    umbral-similitud: ${RAG_UMBRAL_SIMILITUD:0.30}
+    timeout-llm: ${LLM_TIMEOUT:20s}
+
+seguridad:
+  api-key: ${ASISTENTE_API_KEY:}
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      proveedorIa:                   # ver docs/adr/ADR-003 (modo degradado)
+        sliding-window-type: COUNT_BASED
+        sliding-window-size: 10
+        minimum-number-of-calls: 4
+        failure-rate-threshold: 50
+        wait-duration-in-open-state: 30s
+        permitted-number-of-calls-in-half-open-state: 2
+        register-health-indicator: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus,metrics
+  endpoint:
+    health:
+      show-details: always
+      probes:
+        enabled: true
+      group:
+        readiness:
+          include: readinessState,corpus,redis
+  health:
+    livenessstate:
+      enabled: true
+    readinessstate:
+      enabled: true
+  tracing:
+    sampling:
+      probability: 1.0
+  # Trazado distribuido (bonus): el exportador OTLP se activa solo si existe MANAGEMENT_OTLP_TRACING_ENDPOINT.
+
+logging:
+  level:
+    com.vidacruz: INFO

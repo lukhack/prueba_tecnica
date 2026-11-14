@@ -1,0 +1,5 @@
+# Perfil para contenedores (docker-compose / Kubernetes): logs estructurados ECS con traceId/spanId.
+logging:
+  structured:
+    format:
+      console: ecs
