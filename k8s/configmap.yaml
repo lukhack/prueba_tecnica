@@ -12,6 +12,7 @@ data:
   LLM_BASE_URL: https://api.openai.com
   LLM_CHAT_MODEL: gpt-4o-mini
   LLM_EMBEDDING_MODEL: text-embedding-3-small
+  LLM_EMBEDDING_BASE_URL: https://api.openai.com
   RAG_UMBRAL_SIMILITUD: "0.30"
   ESCALAMIENTO_INTERVALO: 30s
   SLA_CRITICO: 5m

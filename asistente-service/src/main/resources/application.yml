@@ -10,6 +10,8 @@ spring:
           model: ${LLM_CHAT_MODEL:gpt-4o-mini}
           temperature: 0.0
       embedding:
+        api-key: ${LLM_EMBEDDING_API_KEY:${LLM_API_KEY}}
+        base-url: ${LLM_EMBEDDING_BASE_URL:${LLM_BASE_URL:https://api.openai.com}}
         options:
           model: ${LLM_EMBEDDING_MODEL:text-embedding-3-small}
   data:

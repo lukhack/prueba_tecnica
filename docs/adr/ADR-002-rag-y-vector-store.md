@@ -13,7 +13,8 @@ no en caliente. Se puede elegir Spring AI o LangChain4j y cualquier vector store
 - **Spring AI 1.1** con el starter OpenAI: cubre chat y embeddings con una sola configuración y es compatible
   con cualquier proveedor que exponga la API de OpenAI (OpenAI, Azure OpenAI, Groq, **Ollama local**). El
   proveedor y la clave se inyectan por variables de entorno (`LLM_BASE_URL`, `LLM_API_KEY`, `LLM_CHAT_MODEL`,
-  `LLM_EMBEDDING_MODEL`).
+  `LLM_EMBEDDING_MODEL`). Los embeddings admiten un proveedor propio (`LLM_EMBEDDING_BASE_URL`,
+  `LLM_EMBEDDING_API_KEY`) para combinar, por ejemplo, DeepSeek en el chat con Ollama en los embeddings.
 - **Vector store en memoria (`SimpleVectorStore`)**, indexado al arrancar desde `classpath:protocolos/*.md`
   (un fragmento por sección `##`). Razones:
   - El corpus cabe sobradamente en memoria y es idéntico en todas las réplicas (es parte del artefacto).

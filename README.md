@@ -33,7 +33,11 @@ Cuando los cinco contenedores estén `healthy`:
 
 Sin una `LLM_API_KEY` válida todo funciona salvo `POST /asistente/consulta`, que responde **503 en modo
 degradado** (por diseño, ver ADR-003). Para una ejecución 100 % local sin claves externas, `.env.example`
-documenta cómo apuntar a **Ollama**.
+documenta cómo apuntar a **Ollama**. El chat y los embeddings pueden venir de proveedores distintos: por
+ejemplo **DeepSeek** para el chat (`LLM_BASE_URL=https://api.deepseek.com`, `LLM_CHAT_MODEL=deepseek-chat`) y
+**Ollama** para los embeddings (`LLM_EMBEDDING_BASE_URL=http://host.docker.internal:11434`,
+`LLM_EMBEDDING_API_KEY=ollama`, `LLM_EMBEDDING_MODEL=nomic-embed-text`, previo `ollama pull nomic-embed-text`),
+ya que DeepSeek no ofrece modelo de embeddings.
 
 Para desarrollar sin Docker para los servicios (solo infraestructura en contenedores):
 
