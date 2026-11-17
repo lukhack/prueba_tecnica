@@ -3,6 +3,7 @@ package com.vidacruz.triage.infraestructura.entrada.rest;
 import com.vidacruz.triage.dominio.excepcion.ExcepcionPacienteNoEncontrado;
 import com.vidacruz.triage.dominio.excepcion.ExcepcionTransicionInvalida;
 import com.vidacruz.triage.dominio.excepcion.ExcepcionValorInvalido;
+import com.vidacruz.triage.infraestructura.entrada.rest.dto.RespuestaError;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;

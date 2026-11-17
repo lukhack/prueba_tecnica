@@ -1,4 +1,4 @@
-package com.vidacruz.triage.infraestructura.entrada.rest;
+package com.vidacruz.triage.infraestructura.entrada.rest.dto;
 
 import com.vidacruz.triage.aplicacion.comando.ComandoRegistrarPaciente;
 import jakarta.validation.constraints.NotBlank;

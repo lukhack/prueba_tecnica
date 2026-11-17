@@ -1,4 +1,4 @@
-package com.vidacruz.triage.infraestructura.entrada.rest;
+package com.vidacruz.triage.infraestructura.entrada.rest.dto;
 
 import com.vidacruz.triage.dominio.modelo.EstadoPaciente;
 import jakarta.validation.constraints.NotNull;

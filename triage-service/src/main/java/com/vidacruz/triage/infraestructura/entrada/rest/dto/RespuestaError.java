@@ -1,4 +1,4 @@
-package com.vidacruz.asistente.infraestructura.entrada.rest;
+package com.vidacruz.triage.infraestructura.entrada.rest.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 

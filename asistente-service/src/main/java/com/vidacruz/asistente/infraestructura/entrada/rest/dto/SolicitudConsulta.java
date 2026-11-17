@@ -1,4 +1,4 @@
-package com.vidacruz.asistente.infraestructura.entrada.rest;
+package com.vidacruz.asistente.infraestructura.entrada.rest.dto;
 
 import jakarta.validation.constraints.NotBlank;
 

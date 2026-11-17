@@ -4,6 +4,7 @@ import com.vidacruz.asistente.aplicacion.manejador.ManejadorConsultarAsistente;
 import com.vidacruz.asistente.aplicacion.manejador.ManejadorConsultarEstadoUrgencias;
 import com.vidacruz.asistente.aplicacion.respuesta.RespuestaConsulta;
 import com.vidacruz.asistente.aplicacion.respuesta.RespuestaEstadoUrgencias;
+import com.vidacruz.asistente.infraestructura.entrada.rest.dto.SolicitudConsulta;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;

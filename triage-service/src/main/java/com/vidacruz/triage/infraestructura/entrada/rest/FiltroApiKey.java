@@ -2,6 +2,7 @@ package com.vidacruz.triage.infraestructura.entrada.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vidacruz.triage.infraestructura.configuracion.PropiedadesSeguridad;
+import com.vidacruz.triage.infraestructura.entrada.rest.dto.RespuestaError;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.core.io.buffer.DataBuffer;

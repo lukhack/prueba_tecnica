@@ -2,6 +2,7 @@ package com.vidacruz.asistente.infraestructura.entrada.rest;
 
 import com.vidacruz.asistente.dominio.excepcion.ExcepcionPreguntaInvalida;
 import com.vidacruz.asistente.dominio.excepcion.ExcepcionProveedorIaNoDisponible;
+import com.vidacruz.asistente.infraestructura.entrada.rest.dto.RespuestaError;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;

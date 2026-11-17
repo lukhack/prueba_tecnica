@@ -7,6 +7,8 @@ import com.vidacruz.triage.aplicacion.manejador.ManejadorRegistrarPaciente;
 import com.vidacruz.triage.aplicacion.respuesta.RespuestaPaciente;
 import com.vidacruz.triage.dominio.modelo.RegistroAuditoria;
 import com.vidacruz.triage.dominio.puerto.RepositorioAuditoria;
+import com.vidacruz.triage.infraestructura.entrada.rest.dto.SolicitudRegistrarPaciente;
+import com.vidacruz.triage.infraestructura.entrada.rest.dto.SolicitudCambiarEstado;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
